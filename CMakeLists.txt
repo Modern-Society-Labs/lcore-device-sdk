@@ -12,11 +12,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Core library containing DID, JOSE, and other core functionalities.
 add_subdirectory(core)
 
-# Platform Abstraction Layer (PAL) for different hardware.
-add_subdirectory(pal)
+# Platform Abstraction Layer
+# add_subdirectory(pal)
 
-# Examples demonstrating the SDK usage.
-add_subdirectory(examples)
+# Examples
+# add_subdirectory(examples)
 
 # --- Global Options ---
 option(LCORE_BUILD_EXAMPLES "Build the example applications" ON)
@@ -29,8 +29,19 @@ include_directories(
 
 # --- Testing ---
 if(LCORE_BUILD_TESTS)
+    # Enable testing
     enable_testing()
-    add_subdirectory(tests)
+
+    # Google Test
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        release-1.12.1
+    )
+    FetchContent_MakeAvailable(googletest)
+    
+    # add_subdirectory(tests)
 endif()
 
 # --- Installation ---

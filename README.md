@@ -10,6 +10,16 @@ The `lcore-device-sdk` provides a robust, standards-based C/C++ library for IoT 
 -   **Cryptographic Primitives**: Leverages standard cryptographic libraries and provides hooks for hardware-accelerated crypto.
 -   **Low Footprint**: Optimized for resource-constrained environments.
 
+## Role in the IoT-L{CORE} MVP
+
+In the current MVP, this SDK's primary role is to provide the standards and patterns for device identity and data packaging. While the MVP testing uses `curl` to simulate device interactions, a real device would use this SDK to:
+1.  Generate and manage a W3C DID for self-sovereign identity.
+2.  Create a JSON payload containing sensor data (e.g., `{"temperature":25.5,"humidity":60.1}`).
+3.  Sign the data payload or a request token using JOSE standards.
+4.  Send the final payload to the `lcore-node-mvp`'s `/device/data` endpoint via an HTTP POST request.
+
+The `lcore-node-mvp` would then be responsible for validating the device's signature before processing the data. This SDK ensures that data arriving at the node is authentic and originates from a trusted, registered device.
+
 ## Project Structure
 
 ```
