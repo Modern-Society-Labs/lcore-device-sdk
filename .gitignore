@@ -1,15 +1,9 @@
-node_modules/
-dist/
-build/
-.env
-.DS_Store
-*.log
-coverage/
+# Build artifacts
 target/
+dist/
 Cargo.lock
 
 # CMake-generated files
-*.build/
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
@@ -28,9 +22,24 @@ CTestTestfile.cmake
 *.o
 *.obj
 
+# Node modules (if any JS tooling)
+node_modules/
+
+# Environment files
+.env
+*.env
+
 # IDE-specific files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# Logs
+*.log
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db

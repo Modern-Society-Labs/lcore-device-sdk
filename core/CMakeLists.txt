@@ -18,8 +18,13 @@ target_include_directories(lcore_core
         src
 )
 
-# Link to other libraries if needed
-# target_link_libraries(lcore_core PRIVATE mbedtls)
+# Link to MbedTLS for ARM PSA cryptography
+target_link_libraries(lcore_core 
+    PRIVATE 
+        mbedcrypto
+        mbedtls
+        mbedx509
+)
 
 # Installation rules
 install(TARGETS lcore_core

@@ -1,6 +1,8 @@
 #include <lcore/did.h>
+#include <mbedtls/sha256.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 // Internal struct definition for the opaque type.
 struct lcore_did_document {
@@ -28,10 +30,22 @@ lcore_did_document_t* lcore_did_create(const uint8_t* key_material, size_t key_m
     memcpy(doc->key_material, key_material, key_material_len);
     doc->key_material_len = key_material_len;
 
-    // In a real implementation, we would generate the DID string based on the key.
-    // For this placeholder, we'll use a fixed string.
-    const char* placeholder_did = "did:lcore:123456789abcdef";
-    doc->did_string = strdup(placeholder_did);
+    // Generate real DID from public key material
+    // 1. Hash the public key with SHA-256 using MbedTLS
+    uint8_t hash[32]; // SHA-256 digest length is 32 bytes
+    mbedtls_sha256(key_material, key_material_len, hash, 0); // 0 = SHA-256 (not SHA-224)
+    
+    // 2. Take first 16 bytes and encode as hex
+    char key_id[33]; // 32 hex chars + null terminator
+    for (int i = 0; i < 16; i++) {
+        sprintf(&key_id[i*2], "%02x", hash[i]);
+    }
+    
+    // 3. Create DID string: did:lcore:<key-id>
+    char did_string[256];
+    snprintf(did_string, sizeof(did_string), "did:lcore:%s", key_id);
+    
+    doc->did_string = strdup(did_string);
     if (!doc->did_string) {
         free(doc->key_material);
         free(doc);
